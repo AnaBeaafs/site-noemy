@@ -369,6 +369,23 @@ button {
     background-position: center top;
 }
 
+/* Texto da confirmação de presença — quebra equilibrada no celular */
+.confirm-section h2 {
+    font-size: clamp(1.7rem, 6.5vw, 3rem);
+    line-height: 1.2;
+    letter-spacing: 1px;
+    text-wrap: balance;
+}
+
+.confirm-section p {
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: clamp(1rem, 3.8vw, 1.15rem);
+    line-height: 1.5;
+    text-wrap: balance;
+}
+
 
 /* ===================== 9. PLAYER DE MÚSICA ===================== */
 #music-player {
@@ -615,6 +632,7 @@ footer a:hover {
     background: center / cover no-repeat;
     --fade-top-color: var(--blue-section);
     --fade-bottom-color: var(--cream);
+    object-position: center 80%
 }
 
 .save-the-date-section {
@@ -624,6 +642,11 @@ footer a:hover {
 /* Blur mais suave na 2ª foto */
 .foto-casal-soft {
     --fade-height: 28%;
+}
+
+/* 2ª foto alinhada mais pelo topo (aumente o % para descer, ex: 20%, 30%) */
+.foto-casal-soft {
+    background-position: center 10%;
 }
 
 .foto-casal-soft.fade-top::before,
@@ -662,7 +685,6 @@ footer a:hover {
     .custom-toggler { display: block; }
 
     /* ===== CENTRALIZA OS ITENS DO MENU QUANDO ABERTO ===== */
-/* ===== CENTRALIZA OS ITENS DO MENU QUANDO ABERTO ===== */
     .navbar-collapse.show {
         display: flex !important;
         flex-direction: column !important;
@@ -914,4 +936,85 @@ footer a:hover {
     .em-breve-titulo { font-size: 3.5rem; }
     .floating-filters { bottom: 80px; gap: 8px; }
     .floating-filters .filter-btn { padding: 10px 16px; font-size: 0.7rem; }
+}
+/* ===== Lista de presentes na HOME — responsivo ===== */
+.hero-presentes-home,
+.hero-presentes {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.hero-content-home {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 8px;
+    box-sizing: border-box;
+}
+
+.hero-content-home h2 {
+    font-size: 2.4rem;
+    line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding: 0 4px;
+}
+
+.hero-content-home p,
+.hero-content-home a {
+    font-size: 1.15rem;
+    line-height: 1.4;
+    max-width: 100%;
+    padding: 0 8px;
+}
+
+/* Celular */
+@media (max-width: 768px) {
+    .hero-presentes-home,
+    .hero-presentes {
+        height: auto;
+        min-height: 280px;
+        padding: 48px 24px;
+    }
+
+    .hero-content-home h2 {
+        font-size: 1.85rem;   /* menor no celular */
+        line-height: 1.25;
+        margin-bottom: 10px;
+    }
+
+    .hero-content-home p,
+    .hero-content-home a {
+        font-size: 1rem;
+        line-height: 1.45;
+    }
+}
+
+/* Telas bem pequenas */
+@media (max-width: 480px) {
+    .hero-presentes-home,
+    .hero-presentes {
+        padding: 40px 20px;
+    }
+
+    .hero-content-home h2 {
+        font-size: 1.55rem;
+    }
+
+    .hero-content-home p,
+    .hero-content-home a {
+        font-size: 0.95rem;
+    }
+}
+@media (max-width: 768px) {
+    .hero-content-home h2 {
+        font-size: 2rem;
+        letter-spacing: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content-home h2 {
+        font-size: 1.7rem;
+    }
 }
