@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background: #f8f4ff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preloader {
+            text-align: center;
+            z-index: 9999;
+        }
+
+        .logo-preload {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.5rem;
+            color: var(--lavanda, #11203d);
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards 0.2s;
+        }
+
+        .loader {
+            width: 80px;
+            height: 80px;
+            border: 6px solid #344d80;
+            border-top: 6px solid #11203d;
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+            margin: 0 auto 25px;
+        }
+
+        .loading-text {
+            font-size: 1.1rem;
+            color: #11203d;
+            letter-spacing: 3px;
+            opacity: 0;
+            animation: fadeIn 1s forwards 0.6s;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Fade out ao terminar */
+        .preloader.fade-out {
+            animation: fadeOut 0.8s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="preloader" id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <script>
+        // Duração: 1 segundo (1000ms)
+        setTimeout(() => {
+            const preloader = document.getElementById('preloader');
+            preloader.classList.add('fade-out');
+            
+            // Remove o preloader do DOM após a animação
+            setTimeout(() => {
+                window.location.href = "index.html"; // ← Mude para a página desejada
+            }, 800);
+        }, 1000);
+    </script>
+
+</body>
+</html>

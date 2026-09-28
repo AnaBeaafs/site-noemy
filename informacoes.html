@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>José & Noemy • Informações</title>
+    <link rel="icon" type="image/png" href="assets/images/LogoNoemi.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Luxurious+Script&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral+SC:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/informacoes.css">
+    
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav class="navbar fixed-top navbar-expand-lg" id="mainNav">
+    <div class="container animate-on-scroll">
+        <a class="navbar-brand fw-bold fs-4" href="index.html" id="brandName">
+            <img src="assets/images/LogoNoemi.png" alt="Logo Noemy" class="img-fluid" style="max-height: 100px;">
+        </a>
+
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" id="hamburgerBtn">
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto text-center">
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('index.html')">Home</a></li>
+                <li class="nav-item"><a class="nav-link active" href="javascript:void(0)" onclick="irPara('informacoes.html')">Informações</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('presenca.html')">Presença</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('presentes.html')">Presentes</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('galeria.html')">Galeria</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ===================== 4. INFORMAÇÕES / SAVE THE DATE (nasce do creme) ===================== -->
+<section class="save-the-date-section fade-top fade-bottom py-5 bg-light">
+    <div class="container">
+        <div class="text-center">
+            <div class="mb-5"><br><br><br><br>
+                <p class="mb-1 animate-on-scroll">22 NOV 2026</p>
+                <h3 class="display-5 text-lavanda animate-on-scroll">DATA</h3>
+                <div class="my-4 animate-on-scroll"><span class="gold-line">✦</span></div>
+
+                <p class="mb-1 animate-on-scroll">16 HORAS</p>
+                <h3 class="display-5 text-lavanda animate-on-scroll">HORÁRIO</h3>
+                <div class="my-4 animate-on-scroll"><span class="gold-line">✦</span></div>
+
+                <p class="mb-1 animate-on-scroll">ESPAÇO DOIS IRMÃOS</p>
+                <h3 class="display-5 text-lavanda animate-on-scroll">LOCAL</h3>
+            </div>
+
+            <h1 class="bible-quote display-1 mb-4 mt-5 animate-on-scroll" style="letter-spacing: 6px; line-height: 1.1;">
+                Save The Date!
+            </h1>
+
+            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center pb-4">
+                <button onclick="addToCalendar()" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill">Salvar data</button>
+                <button onclick="abrirMapa()" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill">Ver Localização</button>
+            </div><br><br><br>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== 5. MANUAL DOS CONVIDADOS ===================== -->
+<section class="manual-convidados-section fade-top py-5">
+    <div class="container">
+        <div class="text-center mb-5"><br><br>
+            <p class="manual-eyebrow animate-on-scroll">MANUAL DOS</p>
+            <h2 class="manual-title animate-on-scroll">Convidados</h2>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <ul class="manual-list list-unstyled" style="list-style:none; margin:0; padding:0;">
+                    <li class="animate-on-scroll" style="display:flex; flex-direction:row; align-items:center; gap:22px; padding:22px 4px; border-bottom:1px solid rgba(52,77,128,0.15);">
+                        <span class="icon-circle" style="display:flex; align-items:center; justify-content:center; width:50px; height:50px; min-width:50px; max-width:50px; border-radius:50%; border:1px solid #344d80; background:transparent; flex-shrink:0;"><i class="fa-solid fa-heart" style="color:#344d80; font-size:1.15rem; line-height:1;"></i></span>
+                        <p style="margin:0; flex:1; text-align:left;">Confirme a sua presença quando tiver certeza.</p>
+                    </li>
+                    <li class="animate-on-scroll" style="display:flex; flex-direction:row; align-items:center; gap:22px; padding:22px 4px; border-bottom:1px solid rgba(52,77,128,0.15);">
+                        <span class="icon-circle" style="display:flex; align-items:center; justify-content:center; width:50px; height:50px; min-width:50px; max-width:50px; border-radius:50%; border:1px solid #344d80; background:transparent; flex-shrink:0;"><i class="fa-solid fa-envelope-open-text" style="color:#344d80; font-size:1.15rem; line-height:1;"></i></span>
+                        <p style="margin:0; flex:1; text-align:left;">Cada convidado foi escolhido com muito carinho, portanto, este convite é individual e exclusivo.</p>
+                    </li>
+                    <li class="animate-on-scroll" style="display:flex; flex-direction:row; align-items:center; gap:22px; padding:22px 4px; border-bottom:1px solid rgba(52,77,128,0.15);">
+                        <span class="icon-circle" style="display:flex; align-items:center; justify-content:center; width:50px; height:50px; min-width:50px; max-width:50px; border-radius:50%; border:1px solid #344d80; background:transparent; flex-shrink:0;"><i class="fa-regular fa-clock" style="color:#344d80; font-size:1.15rem; line-height:1;"></i></span>
+                        <p style="margin:0; flex:1; text-align:left;">Chegue no horário e aproveite cada momento.</p>
+                    </li>
+                    <li class="animate-on-scroll" style="display:flex; flex-direction:row; align-items:center; gap:22px; padding:22px 4px; border-bottom:1px solid rgba(52,77,128,0.15);">
+                        <span class="icon-circle" style="display:flex; align-items:center; justify-content:center; width:50px; height:50px; min-width:50px; max-width:50px; border-radius:50%; border:1px solid #344d80; background:transparent; flex-shrink:0;"><i class="fa-solid fa-camera" style="color:#344d80; font-size:1.15rem; line-height:1;"></i></span>
+                        <p style="margin:0; flex:1; text-align:left;">Evite bloquear a passagem ou ficar na frente dos fotógrafos.</p>
+                    </li>
+                    <li class="animate-on-scroll" style="display:flex; flex-direction:row; align-items:center; gap:22px; padding:22px 4px; border-bottom:1px solid rgba(52,77,128,0.15);">
+                        <span class="icon-circle" style="display:flex; align-items:center; justify-content:center; width:50px; height:50px; min-width:50px; max-width:50px; border-radius:50%; border:1px solid #344d80; background:transparent; flex-shrink:0;"><i class="fa-solid fa-palette" style="color:#344d80; font-size:1.15rem; line-height:1;"></i></span>
+                        <p style="margin:0; flex:1; text-align:left;">Cores reservadas às madrinhas: evite usá-las no dia. Branco é apenas da noiva.</p>
+                    </li>
+                    <li class="animate-on-scroll" style="display:flex; flex-direction:row; align-items:center; gap:22px; padding:22px 4px; border-bottom:1px solid rgba(52,77,128,0.15);">
+                        <span class="icon-circle" style="display:flex; align-items:center; justify-content:center; width:50px; height:50px; min-width:50px; max-width:50px; border-radius:50%; border:1px solid #344d80; background:transparent; flex-shrink:0;"><i class="fa-solid fa-ring" style="color:#344d80; font-size:1.15rem; line-height:1;"></i></span>
+                        <p style="margin:0; flex:1; text-align:left;">Aguarde a liberação das mesas e dos doces.</p>
+                    </li>
+                    <li class="animate-on-scroll" style="display:flex; flex-direction:row; align-items:center; gap:22px; padding:22px 4px;">
+                        <span class="icon-circle" style="display:flex; align-items:center; justify-content:center; width:50px; height:50px; min-width:50px; max-width:50px; border-radius:50%; border:1px solid #344d80; background:transparent; flex-shrink:0;"><i class="fa-solid fa-champagne-glasses" style="color:#344d80; font-size:1.15rem; line-height:1;"></i></span>
+                        <p style="margin:0; flex:1; text-align:left;">Não vá embora sem se despedir dos noivos. Divirta-se e faça parte desse dia tão especial para nós!</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="text-center mt-5 animate-on-scroll">
+            <h3 class="couple-signature">José &amp; Noemy</h3>
+            <p class="manual-date">22.11.2026</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="py-4 text-center text-white">
+    <p>
+        Copyright © 2026 | Produzido por
+        <a href="https://www.instagram.com/biasousawd/" target="_blank" rel="noopener noreferrer" class="instagram-link">
+            <i class="fab fa-instagram"></i> <i>Bia Sousa | Web Designer</i>
+        </a>
+    </p>
+</footer>
+
+<!-- ===================== PLAYER DE MÚSICA ===================== -->
+<div id="music-player">
+    <button id="musicBtn" class="btn-music"><i class="fas fa-music"></i></button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/script.js"></script>
+<script>
+
+    /* ---------- Navbar ao rolar ---------- */
+    window.addEventListener('scroll', () => {
+        document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 80);
+    });
+
+    /* ---------- Animação ao rolar (Intersection Observer) ---------- */
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => entry.target.classList.add('visible'), index * 150);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

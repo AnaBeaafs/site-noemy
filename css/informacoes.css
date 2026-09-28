@@ -1,0 +1,555 @@
+/* ==========================================================================
+   ÍNDICE
+   1. Variáveis e reset
+   2. Tipografia base
+   3. Navbar
+   4. Hero (home)
+   5. Contagem regressiva
+   6. Save the date
+   7. Evento
+   8. Manual dos Convidados
+   9. Confirmar presença
+  10. Player de música
+  11. Footer
+  12. Página de presentes
+  13. Filtros flutuantes
+  14. Transições borradas
+  15. Responsivo
+  16. Animações e Galeria
+   ========================================================================== */
+
+
+/* ===================== 1. VARIÁVEIS E RESET ===================== */
+:root {
+    --lavanda: #344d80;
+    --lavanda-dark: #11203d;
+    --olive: #556B2F;
+    --dark: #11203d;
+    --lime: #C1FF72;
+    --mint: #a1ffb7;
+
+    --text-dark: #0a0a0a;
+    --text-light: #ffffff;
+
+    --font-serif: 'Spectral SC', serif;
+    --font-script: 'Luxurious Script', cursive;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+/* ===================== 2. TIPOGRAFIA BASE ===================== */
+body,
+h1, h2, h3, h4,
+p,
+.btn,
+button {
+    font-family: var(--font-serif);
+}
+
+.bible-quote,
+.save-the-date-section h1,
+.hero-content p,
+.hero-content-home p {
+    font-family: var(--font-script);
+}
+
+h1, h2, h3, h4,
+p {
+    color: var(--text-dark);
+}
+
+.hero-content h2,
+.hero-content p,
+.hero-content-home h2,
+.hero-content-home p,
+.hero-content-home a,
+.countdown-section h2,
+.countdown-section .bible-quote,
+.bible-quote,
+footer {
+    color: var(--text-light);
+}
+
+button {
+    font-size: 80%;
+    color:#000
+}
+
+.bible-quote {
+    font-size: 2.4rem;
+}
+
+
+/* ===================== 3. NAVBAR ===================== */
+.navbar {
+    background: transparent !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    padding: 5px 0 !important;
+}
+
+/* Quando rola a página (menu fechado) */
+.navbar.scrolled {
+    background: rgba(0, 0, 0, 0.55) !important;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Quando o menu está ABERTO (mesmo estilo no topo ou scrollado) */
+.navbar.menu-open,
+.navbar.menu-open.scrolled {
+    background: rgba(17, 32, 61, 0.92) !important;
+    backdrop-filter: blur(12px) !important;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+#brandName {
+    color: #fff !important;
+}
+
+/* ===== LOGO ===== */
+.navbar-brand {
+    padding: 0 !important;
+    margin-right: 0;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    height: 52px;
+    width: auto;
+    max-height: 58px;
+    object-fit: contain;
+}
+
+/* Links */
+#navbarNav .navbar-nav {
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+}
+
+#navbarNav .nav-link {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: #fff !important;
+    transition: all 0.3s ease;
+}
+
+#navbarNav .nav-link:hover,
+#navbarNav .nav-link.active {
+    font-family: var(--font-script) !important;
+    font-size: 1rem;
+    color: var(--lavanda) !important;
+}
+
+/* Hamburger */
+.custom-toggler {
+    display: none;
+    width: 38px;
+    height: 34px;
+    padding: 0;
+    background: transparent;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.hamburger {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.bar {
+    position: absolute;
+    width: 100%;
+    height: 3.2px;
+    background: #fff;
+    border-radius: 3px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bar:nth-child(1) { top: 7px; }
+.bar:nth-child(2) { top: 15.5px; }
+.bar:nth-child(3) { top: 24px; }
+
+#hamburgerBtn[aria-expanded="true"] .bar:nth-child(1) { top: 15.5px; transform: rotate(45deg); }
+#hamburgerBtn[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; }
+#hamburgerBtn[aria-expanded="true"] .bar:nth-child(3) { top: 15.5px; transform: rotate(-45deg); }
+
+/* ===================== 6. SAVE THE DATE ===================== */
+.save-the-date-section {
+    display: flex;
+    align-items: center;
+    min-height: 85vh;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.582), rgba(13, 31, 63, 0.623)),
+        url('/assets/images/aquarela.jpeg') center / cover no-repeat;
+}
+
+.save-the-date-section h1 {
+    font-size: 5rem;
+    color: var(--text-dark);
+}
+
+
+.save-the-date-section .gold-line {
+    font-size: 2rem;
+    color: var(--lavanda);
+}
+.save-the-date-section button {
+    color: #000;
+    border: 1px solid #000;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.save-the-date-section button:hover {
+    color: #000;
+    background: #11203d;
+    border-color: #11203d;
+}
+/* ===================== 7. EVENTO ===================== */
+.evento-section {
+    background-color: var(--lime);
+}
+
+.evento-section h2 {
+    font-family: var(--font-serif);
+    letter-spacing: 2px;
+}
+
+/* ===================== 8. MANUAL DOS CONVIDADOS ===================== */
+.manual-convidados-section {
+    background-color: #f9f7f3 !important;
+    padding-top: 90px !important;
+    padding-bottom: 90px !important;
+}
+
+.manual-convidados-section .manual-eyebrow {
+    font-family: var(--font-serif) !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 5px !important;
+    color: var(--lavanda) !important;
+    margin-bottom: 2px !important;
+}
+
+/* "Convidados" — cursiva e preta, sempre, independente de outras regras */
+.manual-convidados-section .manual-title {
+    font-family: var(--font-script) !important;
+    font-weight: 400 !important;
+    font-size: 3.6rem !important;
+    color: var(--text-dark) !important;
+    letter-spacing: 1px !important;
+    margin: 0 !important;
+}
+.manual-convidados-section h3 {
+    font-family: var(--font-script) !important;
+    font-weight: 400 !important;
+    font-size: 3.6rem !important;
+    color: var(--text-dark) !important;
+    letter-spacing: 1px !important;
+    margin: 0 !important;
+}
+
+.manual-convidados-section .manual-divider {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 14px !important;
+    margin: 22px auto 0 !important;
+    max-width: 260px !important;
+}
+
+.manual-convidados-section .manual-divider span {
+    flex: 1 !important;
+    height: 1px !important;
+    background: rgba(52, 77, 128, 0.35) !important;
+}
+
+.manual-convidados-section .manual-divider i {
+    color: var(--lavanda) !important;
+    font-size: 0.8rem !important;
+}
+
+.manual-list {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.manual-list li {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 22px !important;
+    padding: 22px 4px !important;
+    border-bottom: 1px solid rgba(52, 77, 128, 0.15) !important;
+}
+
+.manual-list li:last-child {
+    border-bottom: none !important;
+}
+
+/* Ícones elegantes: contorno fino azul, sem preenchimento sólido */
+.icon-circle {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+    border-radius: 50% !important;
+    border: 1px solid var(--lavanda) !important;
+    background: transparent !important;
+    flex-shrink: 0 !important;
+    position: static !important;
+}
+
+.icon-circle i {
+    color: var(--lavanda) !important;
+    font-size: 1.15rem !important;
+    line-height: 1 !important;
+}
+
+.manual-list li p {
+    margin: 0 !important;
+    flex: 1 !important;
+    font-family: var(--font-serif) !important;
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+    letter-spacing: 0.4px !important;
+    color: var(--text-dark) !important;
+    text-align: left !important;
+}
+
+/* "José & Noemy" — cursiva e preta */
+.manual-convidados-section .couple-signature {
+    font-family: var(--font-script) !important;
+    font-weight: 400 !important;
+    font-size: 2.8rem !important;
+    color: var(--text-dark) !important;
+    margin-bottom: 4px !important;
+}
+
+.manual-convidados-section .manual-date {
+    font-family: var(--font-serif) !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 3px !important;
+    color: var(--lavanda) !important;
+}
+
+
+/* ===================== 10. PLAYER DE MÚSICA ===================== */
+#music-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000;
+}
+
+.btn-music {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    color: #fff;
+    background: var(--lavanda);
+    box-shadow: 0 8px 25px rgba(52, 77, 128, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ===================== 11. FOOTER ===================== */
+footer {
+    width: 100%;
+    min-height: 60px;
+    margin-top: auto;
+    padding: 30px 20px 30px;
+    text-align: center;
+    background: #000;
+}
+footer p {
+    color: #fbfbfc;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+footer a {
+    color: #516ba3;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    color: #376ed4;
+    text-decoration: underline;
+}
+
+
+/* ===================== 15. RESPONSIVO ===================== */
+@media (max-width: 992px) {
+    .countdown-item .number { font-size: 3.2rem; }
+}
+
+@media (max-width: 991px) {
+    .custom-toggler { display: block; }
+
+    /* ===== CENTRALIZA OS ITENS DO MENU QUANDO ABERTO ===== */
+/* ===== CENTRALIZA OS ITENS DO MENU QUANDO ABERTO ===== */
+    .navbar-collapse.show {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .navbar-collapse.show .navbar-nav {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 1rem !important;          /* ajuste o espaçamento aqui se quiser */
+        text-align: center !important;
+    }
+
+    .navbar-nav .nav-item {
+        width: 100%;
+        text-align: center !important;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s ease;
+    }
+
+    .navbar-collapse.show .nav-item {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    #navbarNav .nav-link {
+        display: inline-block;
+        text-align: center !important;
+    }
+
+    .navbar-brand img {
+        height: 50px;
+    }
+
+    .navbar {
+        padding: 6px 0 !important;
+    }
+
+    .manual-list li {
+        gap: 14px;
+    }
+
+    .icon-circle {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        max-width: 40px;
+    }
+}
+
+
+
+/* ===================== 16. ANIMAÇÕES ===================== */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.confirm-section { transition-delay: 0.5s; }
+.hero-presentes-home { transition-delay: 0.7s; }
+
+/* ===================== 12.1 TRANSIÇÕES BORRADAS ===================== */
+:root {
+    --blue-section: #ffffff;
+    --cream: #f4efe6;
+    --fade-height: 20%;
+}
+
+.fade-top,
+.fade-bottom {
+    position: relative;
+}
+
+.fade-top::before,
+.fade-bottom::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--fade-height);
+    z-index: 1;
+    pointer-events: none;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.fade-bottom::after {
+    bottom: -1px;
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        color-mix(in srgb, var(--fade-bottom-color, var(--blue-section)) 60%, transparent) 55%,
+        var(--fade-bottom-color, var(--blue-section)) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 70%);
+    mask-image: linear-gradient(to bottom, transparent, #000 70%);
+}
+
+.fade-top::before {
+    top: -1px;
+    background: linear-gradient(to top,
+        transparent 0%,
+        color-mix(in srgb, var(--fade-top-color, var(--blue-section)) 60%, transparent) 55%,
+        var(--fade-top-color, var(--blue-section)) 100%);
+    -webkit-mask-image: linear-gradient(to top, transparent, #000 70%);
+    mask-image: linear-gradient(to top, transparent, #000 70%);
+}
+
+.fade-top,
+.countdown-section {
+    margin-top: -1px;
+}
+
+#hero.fade-bottom {
+    --fade-bottom-color: var(--blue-section);
+}
+
+.foto-casal {
+    height: 60vh;
+    height: 60svh;
+    --fade-height: 20%;
+    background: center / cover no-repeat;
+    --fade-top-color: var(--blue-section);
+    --fade-bottom-color: var(--cream);
+}
+
+.save-the-date-section {
+    --fade-top-color: var(--cream);
+}

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>José & Noemy • Presentes</title>
+    <link rel="icon" type="image/png" href="assets/images/LogoNoemi.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Luxurious+Script&family=Spectral+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/presentes.css">
+</head>
+<body>
+
+<nav class="navbar fixed-top navbar-expand-lg" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="index.html" id="brandName">
+            <img src="assets/images/LogoNoemi.png" alt="Logo Noemy">
+        </a>
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" id="hamburgerBtn">
+            <div class="hamburger">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </div>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto text-center">
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('index.html')">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('informacoes.html')">Informações</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('presenca.html')">Presença</a></li>
+                <li class="nav-item"><a class="nav-link active" href="javascript:void(0)" onclick="irPara('presentes.html')">Presentes</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('galeria.html')">Galeria</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero com foto de fundo -->
+<header class="hero">
+    <div class="hero-content animate-on-scroll">
+        <h1>Lista de Presentes</h1>
+        <p>Sua presença é o nosso maior presente, mas se desejar nos presentear, preparamos esta lista com carinho.</p>
+    </div>
+</header>
+
+<main class="wrap">
+    <div id="grid" class="grid"></div>
+    <p id="vazio" class="vazio" hidden>Todos os presentes da lista já foram escolhidos. Muito obrigado pelo carinho! 💙</p>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="giftModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 id="mTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p id="mSub" class="msub"></p>
+                <div class="seg" id="seg">
+                    <button type="button" data-m="pix" class="on"><i class="fa-brands fa-pix"></i> Enviar Pix</button>
+                    <button type="button" data-m="presente"><i class="fa-solid fa-gift"></i> Dar o presente</button>
+                </div>
+                <div id="panePix">
+                    <div class="field" id="amountBox">
+                        <label>Valor do Pix (R$)</label>
+                        <input id="amount" type="number" min="1" step="0.01" placeholder="Ex: 100,00">
+                    </div>
+                    <div id="qr" class="qr"></div>
+                    <div id="copyWrap" class="copybox">
+                        <input id="code" readonly>
+                        <button type="button" id="btnCopy">Copiar</button>
+                    </div>
+                    <a id="btnLink" class="btn-main outline" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-pix"></i> Abrir Pix do casal
+                    </a>
+                </div>
+                <div id="panePresente">
+                    <p class="note">Ao confirmar, este presente sai da lista para os outros convidados.</p>
+                </div>
+                <div class="field" id="nameBox">
+                    <label>Seu nome completo</label>
+                    <input id="guest" type="text" placeholder="Ex: Ana Clara Mendes">
+                </div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" id="btnConfirm" class="btn-main"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="py-4 text-center text-white">
+    <p>Copyright © 2026 | Produzido por
+        <a href="https://www.instagram.com/biasousawd/" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-instagram"></i> <i>Bia Sousa | Web Designer</i>
+        </a>
+    </p>
+</footer>
+
+<div id="music-player">
+    <button id="musicBtn" class="btn-music"><i class="fas fa-music"></i></button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="js/core.js"></script>
+<script src="js/script.js"></script>
+<script>
+let gifts = {}, taken = {}, pix = {}, current = null, mode = 'pix';
+const modal = () => bootstrap.Modal.getOrCreateInstance($('giftModal'));
+
+db.ref('presentes').on('value', s => { gifts = s.val() || {}; render(); });
+db.ref('marcados').on('value',  s => { taken = s.val() || {}; render(); });
+db.ref('config/pix').on('value', s => { pix = s.val() || {}; });
+
+/* ---------- Animação ao rolar ---------- */
+const scrollObs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            scrollObs.unobserve(entry.target);
+        }
+    });
+}, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px'
+});
+
+function observeGifts() {
+    document.querySelectorAll('.gift:not(.visible)').forEach((el, i) => {
+        el.style.transitionDelay = Math.min(i, 10) * 60 + 'ms';
+        scrollObs.observe(el);
+    });
+}
+
+/* Texto do hero */
+document.querySelectorAll('.animate-on-scroll').forEach(el => {
+    scrollObs.observe(el);
+});
+
+function render() {
+    const lista = Object.entries(gifts)
+        .map(([id, g]) => ({ id, ...g }))
+        .filter(g => !taken[g.id])
+        .sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
+
+    const tag = { pix: 'Pix', presente: 'Presente', ambos: 'Pix ou presente' };
+    const cta = { pix: 'Presentear via Pix', presente: 'Escolher presente', ambos: 'Presentear' };
+
+    $('grid').innerHTML = `
+        <article class="gift pixcard">
+            <div class="gift-img pixhead"><i class="fa-brands fa-pix"></i></div>
+            <div class="gift-body">
+                <span class="tag">Sempre disponível</span>
+                <h3>Presente em Pix</h3>
+                <p class="desc">Contribua com o valor que quiser para o nosso novo lar.</p>
+                <button class="btn-main" onclick="openPix()">Enviar Pix</button>
+            </div>
+        </article>` + lista.map((g) => `
+        <article class="gift">
+            <div class="gift-img">
+                <i class="fa-solid fa-gift ph"></i>
+                ${g.img ? `<img src="${esc(g.img)}" alt="${esc(g.nome)}" loading="lazy" onerror="this.remove()">` : ''}
+            </div>
+            <div class="gift-body">
+                <span class="tag">${tag[g.modo] || 'Presente'}</span>
+                <h3>${esc(g.nome)}</h3>
+                ${g.desc ? `<p class="desc">${esc(g.desc)}</p>` : ''}
+                ${g.preco > 0 ? `<div class="price">${brl(g.preco)}</div>` : ''}
+                <button class="btn-main" onclick="openGift('${g.id}')">${cta[g.modo] || 'Escolher'}</button>
+            </div>
+        </article>`).join('');
+
+    $('vazio').hidden = lista.length > 0 || Object.keys(gifts).length === 0;
+    observeGifts();
+}
+
+function openPix() {
+    current = null;
+    $('mTitle').textContent = 'Presente em Pix';
+    $('mSub').textContent = 'Informe o valor e envie para o casal.';
+    $('amount').value = '';
+    setup('pix');
+}
+function openGift(id) {
+    current = { id, ...gifts[id] };
+    $('mTitle').textContent = current.nome;
+    $('mSub').textContent = current.preco > 0 ? 'Valor: ' + brl(current.preco) : '';
+    $('guest').value = '';
+    setup(current.modo === 'presente' ? 'presente' : 'pix');
+}
+function setup(m) {
+    const modo = current ? current.modo : 'pix';
+    $('seg').hidden = modo !== 'ambos';
+    $('nameBox').hidden = !current;
+    $('btnConfirm').hidden = !current;
+    setMode(m);
+    modal().show();
+}
+function setMode(m) {
+    mode = m;
+    document.querySelectorAll('#seg button').forEach(b => b.classList.toggle('on', b.dataset.m === m));
+    $('panePix').hidden = m !== 'pix';
+    $('panePresente').hidden = m !== 'presente';
+    $('btnConfirm').textContent = m === 'pix' ? 'Já enviei o Pix ✓' : 'Confirmar presente ✓';
+    if (m === 'pix') buildPix();
+}
+function buildPix() {
+    const fixo = current && current.preco > 0;
+    $('amountBox').hidden = !!fixo;
+    const valor = fixo ? Number(current.preco) : parseFloat($('amount').value) || 0;
+    const tem = !!pix.chave;
+    $('copyWrap').hidden = !tem;
+    $('qr').innerHTML = '';
+    if (tem) {
+        const p = pixPayload({ chave: pix.chave, nome: pix.nome, cidade: pix.cidade, valor });
+        $('code').value = p;
+        new QRCode($('qr'), { text: p, width: 170, height: 170 });
+    } else if (!pix.link) {
+        $('qr').innerHTML = '<p class="note">O Pix do casal ainda não foi configurado.</p>';
+    }
+    $('btnLink').hidden = !pix.link;
+    $('btnLink').href = pix.link || '#';
+}
+$('amount').addEventListener('input', buildPix);
+document.querySelectorAll('#seg button').forEach(b => b.onclick = () => setMode(b.dataset.m));
+$('btnCopy').onclick = async () => {
+    try { await navigator.clipboard.writeText($('code').value); }
+    catch { $('code').select(); document.execCommand('copy'); }
+    toast('Código Pix copiado! Cole no app do seu banco.');
+};
+
+$('btnConfirm').onclick = async () => {
+    const nome = $('guest').value.trim();
+    if (!nome) return toast('Por favor, informe seu nome.');
+    const r = await db.ref('marcados/' + current.id).transaction(c =>
+        c ? undefined : { nome, tipo: mode, data: new Date().toISOString() });
+    modal().hide();
+    if (!r.committed) return toast('Ops! Alguém acabou de escolher este presente.');
+
+    confetti({
+        particleCount: 120,
+        spread: 75,
+        origin: { y: 0.7 },
+        colors: ['#11203d', '#344d80', '#9db4e6']
+    });
+    toast(`Obrigado, ${nome}! 💙`);
+};
+</script>
+</body>
+</html>

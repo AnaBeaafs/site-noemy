@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>José & Noemy • Galeria</title>
+    <link rel="icon" type="image/png" href="assets/images/LogoNoemi.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Luxurious+Script&family=Spectral+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/galeria.css">
+</head>
+<body>
+
+<!-- ===================== NAVBAR (igual ao home) ===================== -->
+<nav class="navbar fixed-top navbar-expand-lg" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-4" href="index.html" id="brandName">
+            <img src="assets/images/LogoNoemi.png" alt="Logo Noemy" class="img-fluid" style="max-height: 100px;">
+        </a>
+
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" id="hamburgerBtn">
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto text-center">
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('index.html')">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('informacoes.html')">Informações</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('presenca.html')">Presença</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('presentes.html')">Presentes</a></li>
+                <li class="nav-item"><a class="nav-link active" href="javascript:void(0)" onclick="irPara('galeria.html')">Galeria</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ===================== GALERIA ===================== -->
+<main class="galeria-wrapper">
+    <div class="container">
+        <div class="masonry-grid" id="galleryGrid"></div>
+    </div>
+</main>
+
+<!-- Em breve -->
+<div class="em-breve" id="emBreve">
+    <p class="em-breve-titulo">Em breve...</p>
+    <p class="em-breve-sub">As fotos do nosso grande dia estarão aqui.</p>
+</div>
+
+<!-- Filtros flutuantes -->
+<div class="floating-filters">
+    <button class="filter-btn active" data-filter="prewedding">PRÉ-WEDDING</button>
+    <button class="filter-btn" data-filter="casamento">CASAMENTO</button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="photoModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-body p-0 text-center">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-2 bg-white" data-bs-dismiss="modal" style="z-index: 10;"></button>
+                <img id="modalImage" src="" class="img-fluid" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="py-4 text-center text-white">
+    <p>
+        Copyright © 2026 | Produzido por
+        <a href="https://www.instagram.com/biasousawd/" target="_blank" rel="noopener noreferrer" class="instagram-link">
+            <i class="fab fa-instagram"></i> <i>Bia Sousa | Web Designer</i>
+        </a>
+    </p>
+</footer>
+
+<!-- ===================== PLAYER DE MÚSICA ===================== -->
+<div id="music-player">
+    <button id="musicBtn" class="btn-music"><i class="fas fa-music"></i></button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/script.js"></script>
+<script>
+    /* ---------- Lista de fotos (só o número de cada arquivo N&J-XX.JPG) ---------- */
+    const numerosPrewedding = [
+        4, 5, 6, 7, 9, 10, 11, 14, 17, 18, 21, 24, 25, 28, 29, 30, 31, 32, 33,
+        36, 40, 41, 42, 45, 46, 47, 48, 53, 58, 60, 62, 63, 65, 66, 72, 73, 75,
+        78, 79, 82, 83, 84, 88, 89, 91, 94, 95, 96, 97, 104, 105, 112, 114, 115,
+        116, 117, 118, 119, 122, 125, 126, 128, 130, 131
+    ];
+
+    const photos = numerosPrewedding.map(n => ({
+        src: `assets/FotosNoemi/N&J-${n}.JPG`,
+        category: "prewedding"
+    }));
+
+    const galleryGrid = document.getElementById('galleryGrid');
+    const emBreve = document.getElementById('emBreve');
+
+    /* ---------- Tamanhos variados: padrão, alta, baixa e larga ---------- */
+    const padroesTamanho = ['', 'tall', 'short', '', 'tall', 'square', 'short', 'tall'];
+    function classeTamanho(i) {
+        // mistura previsível (não muda a cada clique) para não "pular" o layout
+        return padroesTamanho[(i * 5 + 3) % padroesTamanho.length];
+    }
+
+    function renderGallery(list) {
+        galleryGrid.innerHTML = '';
+
+        if (list.length === 0) {
+            galleryGrid.style.display = 'none';
+            emBreve.classList.add('visivel');
+            return;
+        }
+
+        galleryGrid.style.display = 'block';
+        emBreve.classList.remove('visivel');
+
+        list.forEach((photo, i) => {
+            const item = document.createElement('div');
+            item.className = `masonry-item ${classeTamanho(i)}`.trim();
+            item.style.setProperty('--i', Math.min(i, 14));
+
+            const img = document.createElement('img');
+            img.src = photo.src;
+            img.alt = 'Foto de José e Noemy';
+            img.loading = 'lazy';
+            img.addEventListener('load', () => item.classList.add('loaded'));
+
+            item.appendChild(img);
+            item.addEventListener('click', () => showModal(photo.src));
+            galleryGrid.appendChild(item);
+        });
+    }
+
+    function filterGallery(filter) {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === filter);
+        });
+        renderGallery(photos.filter(p => p.category === filter));
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => filterGallery(btn.dataset.filter));
+    });
+
+    function showModal(src) {
+        document.getElementById('modalImage').src = src;
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('photoModal')).show();
+    }
+
+    // Inicializa
+    filterGallery('prewedding');
+
+    /* ---------- Navbar ao rolar (mesmo comportamento do home) ---------- */
+    window.addEventListener('scroll', () => {
+        document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 80);
+    });
+</script>
+</body>
+</html>

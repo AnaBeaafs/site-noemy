@@ -1,0 +1,179 @@
+(async function () {
+  function hasCookie(name) {
+    return document.cookie.includes(`${name}`);
+  }
+  function getCookie(name) {
+    const parts = document.cookie.split(`${name}=`);
+    if (parts.length === 2) {
+      return parts[1].split(";")[0];
+    }
+    return null;
+  }
+  function setCookie(name, value, options) {
+    document.cookie = `${name}=${value}; path=/; ${options}`;
+  }
+
+  async function getUserIsPaid() {
+    if (window.isPaidUser === true) {
+      return true;
+    } else if (window.isPaidUser === false) {
+      return false;
+    }
+    const strategy = getCookie("vx.strategy");
+    const token = getCookie(`vx.token.${strategy}`);
+    const user = await fetch("https://api.vexels.com/v1/user/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const userData = await user.json();
+    window.isPaidUser = userData.idPlan !== 1;
+    return window.isPaidUser;
+  }
+
+  async function evaluateUser(settings) {
+    if (
+      settings.user.logIn === "optional" &&
+      settings.user.paidUser === "optional"
+    ) {
+      return true;
+    }
+    const isLoggedIn = hasCookie("vx.strategy");
+    if (settings.user.logIn === "must" && !isLoggedIn) {
+      return false;
+    }
+    if (settings.user.logIn === "mustNot" && isLoggedIn) {
+      return false;
+    }
+    if (settings.user.paidUser === "must" && !isLoggedIn) {
+      return false;
+    }
+    if (settings.user.paidUser === "mustNot" && !isLoggedIn) {
+      return false;
+    }
+    let isPaidUser = false;
+    if (
+      settings.user.paidUser === "must" ||
+      settings.user.paidUser === "mustNot"
+    ) {
+      isPaidUser = await getUserIsPaid();
+    }
+    if (settings.user.paidUser === "must" && !isPaidUser) {
+      return false;
+    }
+    if (settings.user.paidUser === "mustNot" && isPaidUser) {
+      return false;
+    }
+    return true;
+  }
+
+  function evaluateUrl(settings) {
+    const actualUrl = window.location.href;
+    if (settings.url.default === "hide") {
+      const anyMatch = settings.url.showInUrlsThatIncludes.some((url) =>
+        new RegExp(url).test(actualUrl)
+      );
+      if (anyMatch) {
+        return true;
+      }
+      return false;
+    }
+    if (settings.url.default === "show") {
+      const anyMatch = settings.url.hideInUrlsThatIncludes.some((url) =>
+        new RegExp(url).test(actualUrl)
+      );
+      if (anyMatch) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  function evaluateCloseBehavior(banner) {
+    if (banner.settings.closeBehavior === "showEveryVisit") {
+      return true;
+    }
+    const isHidden = document.cookie.includes(
+      `vx.banner.${banner.id}.hidden=true`
+    );
+    return !isHidden;
+  }
+
+  async function evaluateBanner(banner) {
+    if (!evaluateCloseBehavior(banner)) {
+      return false;
+    }
+
+    if (!evaluateUrl(banner.settings)) {
+      return false;
+    }
+
+    if (!(await evaluateUser(banner.settings))) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function getShowVariation(settings) {
+    const cookieVariation = getCookie(`vx.banner.${settings.id}.variation`);
+    if (cookieVariation) {
+      const shownVariation = settings.variants.find(
+        (variant) => variant.id === cookieVariation
+      );
+      return shownVariation;
+    } else {
+      const randomVariation =
+        settings.variants[Math.floor(Math.random() * settings.variants.length)];
+      setCookie(`vx.banner.${settings.id}.variation`, randomVariation.id);
+      return randomVariation;
+    }
+  }
+
+  const url = "/astro-static/web-banners/banners.json";
+  const data = await fetch(`${url}`);
+  const banners = await data.json();
+  for (const bannerData of banners.banners) {
+    const showBanner = await evaluateBanner(bannerData);
+    if (!showBanner) {
+      continue;
+    }
+    const showVariation = getShowVariation(bannerData);
+    try {
+      const bannerContent = await fetch(`${showVariation.url}`);
+      if (!bannerContent.ok) {
+        continue;
+      }
+      const bannerContentText = await bannerContent.text();
+      const showBanner = () => {
+        const bannerDom = document.createElement("div");
+
+        bannerDom.innerHTML = bannerContentText;
+        document.body.appendChild(bannerDom);
+
+        setTimeout(() => {
+          bannerDom.classList.add("sticky-bar-enter");
+        }, 100);
+
+        bannerDom.addEventListener("click", (event) => {
+          if (
+            event.target &&
+            (event.target.matches(".close-button") ||
+              event.target.matches(".web-banner-element"))
+          ) {
+            document.cookie = `vx.banner.${bannerData.id}.hidden=true; path=/; max-age=31536000`;
+            bannerDom.remove();
+          }
+        });
+      };
+      if (bannerData.settings.delaySeconds > 0) {
+        setTimeout(() => {
+          showBanner();
+        }, bannerData.settings.delaySeconds * 1000);
+      } else {
+        showBanner();
+      }
+    } catch (error) {}
+  }
+})();

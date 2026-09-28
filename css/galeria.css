@@ -1,0 +1,429 @@
+/* ==========================================================================
+   GALERIA.CSS  (mesma identidade visual do home)
+   1. Variáveis e reset
+   2. Tipografia
+   3. Navbar (idêntica ao home)
+   4. Galeria / Masonry
+   5. Modal
+   6. Filtros flutuantes
+   7. Em breve
+   8. Player de música e Footer
+   9. Responsivo
+   ========================================================================== */
+
+/* ===================== 1. VARIÁVEIS E RESET ===================== */
+:root {
+    --lavanda: #344d80;
+    --lavanda-dark: #11203d;
+    --dark: #11203d;
+    --text-dark: #0a0a0a;
+    --text-light: #ffffff;
+
+    --font-serif: 'Spectral SC', serif;
+    --font-script: 'Luxurious Script', cursive;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-serif);
+    background: #ffffff;              /* fundo da galeria branco */
+    color: var(--text-dark);
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* ===================== 2. TIPOGRAFIA ===================== */
+h1, h2, h3, h4, p, .btn, button {
+    font-family: var(--font-serif);
+}
+
+h1, h2, h3, h4, p {
+    color: var(--text-dark);
+}
+
+footer, footer p {
+    color: var(--text-light);
+}
+
+
+/* ===================== 3. NAVBAR (idêntica ao home) ===================== */
+.navbar {
+    background: transparent !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    padding: 5px 0 !important;
+}
+
+/* Na galeria o fundo é branco, então a barra já nasce no estilo "rolado"
+   do home (escura translúcida) para os links brancos ficarem legíveis. */
+.navbar,
+.navbar.scrolled {
+    background: rgba(0, 0, 0, 0.55) !important;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.navbar.menu-open,
+.navbar.menu-open.scrolled {
+    background: rgba(17, 32, 61, 0.92) !important;
+    backdrop-filter: blur(12px) !important;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+#brandName {
+    color: #fff !important;
+}
+
+.navbar-brand {
+    padding: 0 !important;
+    margin-right: 0;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    height: 52px;
+    width: auto;
+    max-height: 58px;
+    object-fit: contain;
+}
+
+#navbarNav .navbar-nav {
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+}
+
+#navbarNav .nav-link {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: #fff !important;
+    transition: all 0.3s ease;
+}
+
+#navbarNav .nav-link:hover,
+#navbarNav .nav-link.active {
+    font-family: var(--font-script) !important;
+    font-size: 1.3rem;
+    color: #11203d !important;   /* azul mais claro para contrastar com a barra escura */
+}
+
+/* Hamburger */
+.custom-toggler {
+    display: none;
+    width: 38px;
+    height: 34px;
+    padding: 0;
+    background: transparent;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.hamburger {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.bar {
+    position: absolute;
+    width: 100%;
+    height: 3.2px;
+    background: #fff;
+    border-radius: 3px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bar:nth-child(1) { top: 7px; }
+.bar:nth-child(2) { top: 15.5px; }
+.bar:nth-child(3) { top: 24px; }
+
+#hamburgerBtn[aria-expanded="true"] .bar:nth-child(1) { top: 15.5px; transform: rotate(45deg); }
+#hamburgerBtn[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; }
+#hamburgerBtn[aria-expanded="true"] .bar:nth-child(3) { top: 15.5px; transform: rotate(-45deg); }
+
+
+/* ===================== 4. GALERIA / MASONRY ===================== */
+.galeria-wrapper {
+    padding: 80px 0 0px;       /* espaço p/ navbar no topo e filtros embaixo */
+    background: #ffffff;
+    min-height: 100vh;
+}
+
+.masonry-grid {
+    column-count: 4;
+    column-gap: 18px;
+}
+
+.masonry-item {
+    break-inside: avoid;
+    margin-bottom: 18px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #eef0f4;
+    box-shadow: 0 6px 20px rgba(17, 32, 61, 0.10);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.9s cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 0.9s cubic-bezier(0.25, 0.1, 0.25, 1),
+                box-shadow 0.5s ease;
+    transition-delay: calc(var(--i, 0) * 60ms);
+}
+
+.masonry-item.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.masonry-item img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 3 / 4;
+    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Tamanhos diferentes */
+.masonry-item.tall img   { aspect-ratio: 2 / 3.1; }
+.masonry-item.short img  { aspect-ratio: 4 / 3; }
+.masonry-item.square img { aspect-ratio: 1 / 1; }
+
+.masonry-item.loaded:hover {
+    box-shadow: 0 16px 38px rgba(17, 32, 61, 0.22);
+    transition-delay: 0s;
+}
+
+.masonry-item:hover img {
+    transform: scale(1.06);
+}
+
+
+/* ===================== 5. MODAL ===================== */
+#photoModal .modal-content {
+    background: transparent;
+    border: none;
+}
+
+#photoModal .modal-dialog {
+    transition: transform 0.4s ease;
+}
+
+#modalImage {
+    max-height: 85vh;
+    width: auto;
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+}
+
+
+/* ===================== 6. FILTROS FLUTUANTES ===================== */
+.floating-filters {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    gap: 14px;
+}
+
+.floating-filters .filter-btn {
+    padding: 12px 28px;
+    font-family: var(--font-serif);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    color: var(--lavanda-dark);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(52, 77, 128, 0.35);
+    border-radius: 50px;
+    white-space: nowrap;
+    transition: all 0.4s ease;
+    box-shadow: 0 6px 25px rgba(17, 32, 61, 0.14);
+}
+
+.floating-filters .filter-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(17, 32, 61, 0.22);
+}
+
+.floating-filters .filter-btn.active {
+    background: var(--lavanda);
+    color: #fff;
+    border-color: var(--lavanda);
+    box-shadow: 0 8px 25px rgba(52, 77, 128, 0.45);
+}
+
+
+/* ===================== 7. EM BREVE ===================== */
+.em-breve {
+    display: none;
+    position: fixed;
+    inset: 0;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    z-index: 100;
+    background: rgba(17, 32, 61, 0.97);
+}
+
+.em-breve.visivel {
+    display: flex;
+    animation: fadeIn 0.6s ease both;
+}
+
+.em-breve-titulo {
+    font-family: var(--font-script);
+    font-size: 8rem;
+    color: #fff;
+    margin-bottom: 16px;
+    line-height: 1.1;
+}
+
+.em-breve-sub {
+    font-family: var(--font-serif);
+    color: #e8ecf5;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.em-breve.visivel ~ footer {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+
+/* ===================== 8. PLAYER DE MÚSICA E FOOTER ===================== */
+#music-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000;
+}
+
+.btn-music {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    color: #fff;
+    background: var(--lavanda);
+    box-shadow: 0 8px 25px rgba(52, 77, 128, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.btn-music:hover {
+    transform: scale(1.08);
+}
+
+footer {
+    width: 100%;
+    min-height: 60px;
+    margin-top: auto;
+    padding: 30px 20px;
+    text-align: center;
+    background: #000;
+}
+
+footer p {
+    color: #fbfbfc;
+}
+
+footer a {
+    color: #516ba3;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    color: #376ed4;
+    text-decoration: underline;
+}
+
+
+/* ===================== 9. RESPONSIVO ===================== */
+@media (max-width: 991px) {
+    .custom-toggler { display: block; }
+
+    .navbar-collapse.show {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .navbar-collapse.show .navbar-nav {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 1rem !important;
+        text-align: center !important;
+    }
+
+    .navbar-nav .nav-item {
+        width: 100%;
+        text-align: center !important;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s ease;
+    }
+
+    .navbar-collapse.show .nav-item {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    #navbarNav .nav-link {
+        display: inline-block;
+        text-align: center !important;
+    }
+
+    .navbar-brand img { height: 50px; }
+    .navbar { padding: 6px 0 !important; }
+
+    .masonry-grid { column-count: 3; }
+}
+
+@media (max-width: 768px) {
+    .masonry-grid { column-count: 2; column-gap: 12px; }
+    .masonry-item { margin-bottom: 12px; border-radius: 12px; }
+    .em-breve-titulo { font-size: 5rem; }
+    .galeria-wrapper { padding-top: 100px; }
+}
+
+@media (max-width: 480px) {
+    .masonry-grid { column-count: 2; column-gap: 10px; }
+    .masonry-item { margin-bottom: 10px; }
+    .em-breve-titulo { font-size: 3.5rem; }
+    .floating-filters { bottom: 80px; gap: 8px; }
+    .floating-filters .filter-btn { padding: 10px 16px; font-size: 0.7rem; }
+}

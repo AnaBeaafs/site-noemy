@@ -1,0 +1,917 @@
+/* ==========================================================================
+   ÍNDICE
+   1. Variáveis e reset
+   2. Tipografia base
+   3. Navbar
+   4. Hero (home)
+   5. Contagem regressiva
+   6. Save the date
+   7. Evento
+   8. Confirmar presença
+   9. Player de música
+  10. Footer
+  11. Página de presentes
+  12. Filtros flutuantes
+  13. Transições borradas
+  14. Responsivo
+  15. Animações e Galeria
+   ========================================================================== */
+
+
+/* ===================== 1. VARIÁVEIS E RESET ===================== */
+:root {
+    --lavanda: #344d80;
+    --lavanda-dark: #11203d;
+    --olive: #556B2F;
+    --dark: #11203d;
+    --lime: #C1FF72;
+    --mint: #a1ffb7;
+
+    --text-dark: #0a0a0a;
+    --text-light: #ffffff;
+
+    --font-serif: 'Spectral SC', serif;
+    --font-script: 'Luxurious Script', cursive;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+/* ===================== 2. TIPOGRAFIA BASE ===================== */
+body,
+h1, h2, h3, h4,
+p,
+.btn,
+button {
+    font-family: var(--font-serif);
+}
+
+.bible-quote,
+.save-the-date-section h1,
+.hero-content p,
+.hero-content-home p {
+    font-family: var(--font-script);
+}
+
+h1, h2, h3, h4,
+p {
+    color: var(--text-dark);
+}
+
+.hero-content h2,
+.hero-content p,
+.hero-content-home h2,
+.hero-content-home p,
+.hero-content-home a,
+.countdown-section h2,
+.countdown-section .bible-quote,
+.bible-quote,
+footer {
+    color: var(--text-light);
+}
+
+button {
+    font-size: 80%;
+    color:#000
+}
+
+.bible-quote {
+    font-size: 2.4rem;
+}
+
+
+/* ===================== 3. NAVBAR ===================== */
+.navbar {
+    background: transparent !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    padding: 5px 0 !important;
+}
+
+/* Quando rola a página (menu fechado) */
+.navbar.scrolled {
+    background: rgba(0, 0, 0, 0.55) !important;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Quando o menu está ABERTO (mesmo estilo no topo ou scrollado) */
+.navbar.menu-open,
+.navbar.menu-open.scrolled {
+    background: rgba(17, 32, 61, 0.92) !important;
+    backdrop-filter: blur(12px) !important;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+#brandName {
+    color: #fff !important;
+}
+
+/* ===== LOGO ===== */
+.navbar-brand {
+    padding: 0 !important;
+    margin-right: 0;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    height: 52px;
+    width: auto;
+    max-height: 58px;
+    object-fit: contain;
+}
+
+/* Links */
+#navbarNav .navbar-nav {
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+}
+
+#navbarNav .nav-link {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: #fff !important;
+    transition: all 0.3s ease;
+}
+
+#navbarNav .nav-link:hover,
+#navbarNav .nav-link.active {
+    font-family: var(--font-script) !important;
+    font-size: 1rem;
+    color: var(--lavanda) !important;
+}
+
+/* Hamburger */
+.custom-toggler {
+    display: none;
+    width: 38px;
+    height: 34px;
+    padding: 0;
+    background: transparent;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.hamburger {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.bar {
+    position: absolute;
+    width: 100%;
+    height: 3.2px;
+    background: #fff;
+    border-radius: 3px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bar:nth-child(1) { top: 7px; }
+.bar:nth-child(2) { top: 15.5px; }
+.bar:nth-child(3) { top: 24px; }
+
+#hamburgerBtn[aria-expanded="true"] .bar:nth-child(1) { top: 15.5px; transform: rotate(45deg); }
+#hamburgerBtn[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; }
+#hamburgerBtn[aria-expanded="true"] .bar:nth-child(3) { top: 15.5px; transform: rotate(-45deg); }
+
+
+/* ===================== 4. HERO (HOME) ===================== */
+#hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#heroCarousel,
+#heroCarousel .carousel-inner,
+#heroCarousel .carousel-item {
+    height: 100vh;
+}
+
+#heroCarousel .carousel-item img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    object-position: center 30%;
+    filter: brightness(0.75);
+}
+
+.hero-line {
+    width: 180px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #ffffff, transparent);
+    opacity: 0.85;
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    width: 90%;
+    max-width: 900px;
+}
+
+.hero-content h2 {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+}
+
+.hero-content p {
+    font-size: 1.6rem;
+    max-width: 720px;
+    margin: 0 auto 4px;
+    line-height: 1.25;
+    opacity: 0.95;
+    font-family: var(--font-serif);
+}
+
+/* Título principal */
+.hero-content h2.ptitulo {
+    font-family: var(--font-script);
+    font-size: 5.2rem;
+    color: #fff;
+    margin-bottom: 0;
+    white-space: nowrap;
+    letter-spacing: 1px;
+}
+
+/* Citação bíblica */
+.hero-content .bible-quote {
+    font-family: var(--font-script);
+    font-size: 2.3rem;
+    line-height: 1.3;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+
+/* ===================== 5. CONTAGEM REGRESSIVA ===================== */
+.countdown-section {
+    position: relative;
+    z-index: 3;
+    padding: 80px 15px 90px;
+    text-align: center;
+    color: #000000;
+    background: var(--blue-section);
+}
+
+.countdown-section h2,
+.countdown-section .bible-quote {
+    font-size: 2.2rem;
+    margin-bottom: 0;
+    color: #000;
+}
+
+#countdown-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.countdown-item {
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+}
+
+.countdown-item .number {
+    font-size: 3.6rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 6px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    color: #000;
+}
+
+.countdown-item .label {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #000000;
+    opacity: 0.95;
+}
+
+
+/* ===================== 6. SAVE THE DATE ===================== */
+.save-the-date-section {
+    display: flex;
+    align-items: center;
+    min-height: 85vh;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.582), rgba(13, 31, 63, 0.623)),
+        url('/assets/images/aquarela.jpeg') center / cover no-repeat;
+}
+
+.save-the-date-section h1 {
+    font-size: 5rem;
+    color: var(--text-dark);
+}
+
+
+.save-the-date-section .gold-line {
+    font-size: 2rem;
+    color: var(--lavanda);
+}
+.save-the-date-section button {
+    color: #000;
+    border: 1px solid #000;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.save-the-date-section button:hover {
+    color: #000;
+    background: #11203d;
+    border-color: #11203d;
+}
+/* ===================== 7. EVENTO ===================== */
+.evento-section {
+    background-color: var(--lime);
+}
+
+.evento-section h2 {
+    font-family: var(--font-serif);
+    letter-spacing: 2px;
+}
+
+
+/* ===================== 8. CONFIRMAR PRESENÇA ===================== */
+.confirm-section {
+    display: flex;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 0;
+    color: #fff;
+    background-position: center top;
+}
+
+
+/* ===================== 9. PLAYER DE MÚSICA ===================== */
+#music-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000;
+}
+
+.btn-music {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    color: #fff;
+    background: var(--lavanda);
+    box-shadow: 0 8px 25px rgba(52, 77, 128, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ===================== 10. FOOTER ===================== */
+footer {
+    width: 100%;
+    min-height: 60px;
+    margin-top: auto;
+    padding: 30px 20px 30px;
+    text-align: center;
+    background: #000;
+}
+footer p {
+    color: #fbfbfc;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+footer a {
+    color: #516ba3;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    color: #376ed4;
+    text-decoration: underline;
+}
+
+
+/* ===================== 11. PÁGINA DE PRESENTES ===================== */
+.hero-presentes,
+.hero-presentes-home {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30vh;
+    min-height: 350px;
+    text-align: center;
+    color: #fff;
+    background-color: var(--dark);
+}
+
+.hero-content-home h2 {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.hero-content-home p {
+    font-size: 1.2rem;
+    max-width: 720px;
+    opacity: 2;
+    color:#ffffffcc;
+    font-family: var(--font-serif);
+}
+
+.hero-content-home a {
+    font-size: 1.25rem;
+    max-width: 720px;
+    margin: 0 auto;
+    opacity: 0.95;
+}
+
+.presentes-section {
+    padding: 80px 0 100px;
+    background: #fff;
+}
+
+.section-divider {
+    height: 3px;
+    max-width: 280px;
+    margin: 0 auto 3rem;
+    background: linear-gradient(to right, transparent, var(--lavanda), transparent);
+}
+
+.gift-card {
+    height: 100%;
+    border: none;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+}
+
+.gift-card:hover {
+    transform: translateY(-15px);
+}
+
+.gift-card.presenteado {
+    filter: grayscale(80%) opacity(0.68);
+}
+
+.gift-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 1.6rem;
+}
+
+.badge-utensilios { background-color: var(--dark);         color: #fff; }
+.badge-eletro     { background-color: var(--lavanda);      color: #fff; }
+.badge-moveis     { background-color: var(--lavanda-dark); color: #fff; }
+
+.btn-confirm {
+    width: 100%;
+    padding: 12px 0;
+    font-weight: 500;
+    color: var(--lavanda);
+    border: 2px solid var(--lavanda);
+    border-radius: 50px;
+}
+
+.btn-confirm:hover {
+    color: #fff;
+    background-color: var(--lavanda);
+}
+
+
+/* ===================== 12. FILTROS FLUTUANTES ===================== */
+.floating-filters {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    gap: 15px;
+}
+
+.floating-filters .filter-btn {
+    padding: 12px 28px;
+    font-family: var(--font-serif);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+    color: #11203d8c;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(182, 152, 238, 0.7);
+    border-radius: 50px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+    transition: all 0.4s ease;
+}
+
+.floating-filters .filter-btn:hover {
+    background: #fff;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.floating-filters .filter-btn.active {
+    color: var(--text-dark);
+    background: #06142588;
+    border-color: var(--lavanda);
+    box-shadow: 0 8px 25px rgba(29, 50, 117, 0.45);
+}
+
+
+/* ===================== 12.1 TRANSIÇÕES BORRADAS ===================== */
+:root {
+    --blue-section: #ffffff;
+    --cream: #f4efe6;
+    --fade-height: 20%;
+}
+
+.fade-top,
+.fade-bottom {
+    position: relative;
+}
+
+.fade-top::before,
+.fade-bottom::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--fade-height);
+    z-index: 1;
+    pointer-events: none;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.fade-bottom::after {
+    bottom: -1px;
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        color-mix(in srgb, var(--fade-bottom-color, var(--blue-section)) 60%, transparent) 55%,
+        var(--fade-bottom-color, var(--blue-section)) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 70%);
+    mask-image: linear-gradient(to bottom, transparent, #000 70%);
+}
+
+.fade-top::before {
+    top: -1px;
+    background: linear-gradient(to top,
+        transparent 0%,
+        color-mix(in srgb, var(--fade-top-color, var(--blue-section)) 60%, transparent) 55%,
+        var(--fade-top-color, var(--blue-section)) 100%);
+    -webkit-mask-image: linear-gradient(to top, transparent, #000 70%);
+    mask-image: linear-gradient(to top, transparent, #000 70%);
+}
+
+.fade-top,
+.countdown-section {
+    margin-top: -1px;
+}
+
+#hero.fade-bottom {
+    --fade-bottom-color: var(--blue-section);
+}
+
+.foto-casal {
+    height: 60vh;
+    height: 60svh;
+    --fade-height: 20%;
+    background: center / cover no-repeat;
+    --fade-top-color: var(--blue-section);
+    --fade-bottom-color: var(--cream);
+}
+
+.save-the-date-section {
+    --fade-top-color: var(--cream);
+}
+
+/* Blur mais suave na 2ª foto */
+.foto-casal-soft {
+    --fade-height: 28%;
+}
+
+.foto-casal-soft.fade-top::before,
+.foto-casal-soft.fade-bottom::after {
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}
+
+.foto-casal-soft.fade-bottom::after {
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        color-mix(in srgb, var(--fade-bottom-color, var(--cream)) 25%, transparent) 40%,
+        color-mix(in srgb, var(--fade-bottom-color, var(--cream)) 55%, transparent) 70%,
+        var(--fade-bottom-color, var(--cream)) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 10%, #000 85%);
+    mask-image: linear-gradient(to bottom, transparent 10%, #000 85%);
+}
+
+.foto-casal-soft.fade-top::before {
+    background: linear-gradient(to top,
+        transparent 0%,
+        color-mix(in srgb, var(--fade-top-color, var(--blue-section)) 25%, transparent) 40%,
+        color-mix(in srgb, var(--fade-top-color, var(--blue-section)) 55%, transparent) 70%,
+        var(--fade-top-color, var(--blue-section)) 100%);
+    -webkit-mask-image: linear-gradient(to top, transparent 10%, #000 85%);
+    mask-image: linear-gradient(to top, transparent 10%, #000 85%);
+}
+
+
+/* ===================== 13. RESPONSIVO ===================== */
+@media (max-width: 992px) {
+    .countdown-item .number { font-size: 3.2rem; }
+}
+
+@media (max-width: 991px) {
+    .custom-toggler { display: block; }
+
+    /* ===== CENTRALIZA OS ITENS DO MENU QUANDO ABERTO ===== */
+/* ===== CENTRALIZA OS ITENS DO MENU QUANDO ABERTO ===== */
+    .navbar-collapse.show {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .navbar-collapse.show .navbar-nav {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 1rem !important;          /* ajuste o espaçamento aqui se quiser */
+        text-align: center !important;
+    }
+
+    .navbar-nav .nav-item {
+        width: 100%;
+        text-align: center !important;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s ease;
+    }
+
+    .navbar-collapse.show .nav-item {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    #navbarNav .nav-link {
+        display: inline-block;
+        text-align: center !important;
+    }
+
+    .navbar-brand img {
+        height: 50px;
+    }
+
+    .navbar {
+        padding: 6px 0 !important;
+    }
+}
+
+/* ===== CELULAR - TÍTULO E CITAÇÃO ===== */
+@media (max-width: 768px) {
+    /* Título em 1 linha e grande */
+    .hero-content h2.ptitulo {
+        font-size: 4.8rem;
+        white-space: nowrap;
+        letter-spacing: 0.2px;
+    }
+
+    /* Citação em 2 linhas e bem visível */
+    .hero-content .bible-quote {
+        font-size: 1.85rem;
+        line-height: 1.35;
+        max-width: 92%;
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+    }
+
+    .bible-quote {
+        font-size: 1.85rem;
+    }
+
+    .countdown-section { padding: 55px 10px 75px; }
+    .countdown-item { min-width: 85px; }
+    .countdown-item .number { font-size: 2.8rem; }
+    .countdown-item .label { font-size: 0.95rem; }
+
+    .hero-presentes,
+    .hero-presentes-home { height: 38vh; }
+    .hero-content-home h2 { font-size: 2.6rem; }
+}
+
+/* Telas bem pequenas */
+@media (max-width: 480px) {
+    .hero-content h2.ptitulo {
+        font-size: 3.1rem;
+    }
+
+    .hero-content .bible-quote {
+        font-size: 1.6rem;
+        line-height: 1.35;
+    }
+
+    :root { --fade-height: 120px; }
+    .countdown-item { min-width: 40px; }
+    .countdown-item .number { font-size: 2.35rem; }
+    .countdown-item .label { font-size: 0.9rem; }
+    #countdown-container { gap: 15px; }
+}
+
+/* Mobile - remove blur (performance) */
+@media (max-width: 768px) {
+    .fade-top::before,
+    .fade-bottom::after {
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+
+    .fade-bottom::after {
+        background: linear-gradient(to bottom,
+            transparent 0%,
+            color-mix(in srgb, var(--fade-bottom-color, var(--blue-section)) 10%, transparent) 20%,
+            color-mix(in srgb, var(--fade-bottom-color, var(--blue-section)) 35%, transparent) 45%,
+            color-mix(in srgb, var(--fade-bottom-color, var(--blue-section)) 70%, transparent) 75%,
+            var(--fade-bottom-color, var(--blue-section)) 100%);
+    }
+
+    .fade-top::before {
+        background: linear-gradient(to top,
+            transparent 0%,
+            color-mix(in srgb, var(--fade-top-color, var(--blue-section)) 10%, transparent) 20%,
+            color-mix(in srgb, var(--fade-top-color, var(--blue-section)) 35%, transparent) 45%,
+            color-mix(in srgb, var(--fade-top-color, var(--blue-section)) 70%, transparent) 75%,
+            var(--fade-top-color, var(--blue-section)) 100%);
+    }
+
+    .foto-casal-soft.fade-bottom::after {
+        background: linear-gradient(to bottom,
+            transparent 0%,
+            color-mix(in srgb, var(--fade-bottom-color, var(--cream)) 10%, transparent) 20%,
+            color-mix(in srgb, var(--fade-bottom-color, var(--cream)) 35%, transparent) 45%,
+            color-mix(in srgb, var(--fade-bottom-color, var(--cream)) 70%, transparent) 75%,
+            var(--fade-bottom-color, var(--cream)) 100%);
+    }
+
+    .foto-casal-soft.fade-top::before {
+        background: linear-gradient(to top,
+            transparent 0%,
+            color-mix(in srgb, var(--fade-top-color, var(--blue-section)) 10%, transparent) 20%,
+            color-mix(in srgb, var(--fade-top-color, var(--blue-section)) 35%, transparent) 45%,
+            color-mix(in srgb, var(--fade-top-color, var(--blue-section)) 70%, transparent) 75%,
+            var(--fade-top-color, var(--blue-section)) 100%);
+    }
+}
+
+
+/* ===================== 14. ANIMAÇÕES E GALERIA ===================== */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.confirm-section { transition-delay: 0.5s; }
+.hero-presentes-home { transition-delay: 0.7s; }
+
+/* ===================== 4. GALERIA / MASONRY ===================== */
+.galeria-wrapper {
+    padding: 120px 0 170px;       /* espaço p/ navbar no topo e filtros embaixo */
+    background: #ffffff;
+    min-height: 100vh;
+}
+
+.masonry-grid {
+    column-count: 4;
+    column-gap: 18px;
+}
+
+.masonry-item {
+    break-inside: avoid;
+    margin-bottom: 18px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #eef0f4;
+    box-shadow: 0 6px 20px rgba(17, 32, 61, 0.10);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.9s cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 0.9s cubic-bezier(0.25, 0.1, 0.25, 1),
+                box-shadow 0.5s ease;
+    transition-delay: calc(var(--i, 0) * 60ms);
+}
+
+.masonry-item.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.masonry-item img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 3 / 4;
+    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Tamanhos diferentes */
+.masonry-item.tall img   { aspect-ratio: 2 / 3.1; }
+.masonry-item.short img  { aspect-ratio: 4 / 3; }
+.masonry-item.square img { aspect-ratio: 1 / 1; }
+
+.masonry-item.loaded:hover {
+    box-shadow: 0 16px 38px rgba(17, 32, 61, 0.22);
+    transition-delay: 0s;
+}
+
+.masonry-item:hover img {
+    transform: scale(1.06);
+}
+
+
+/* ===================== 5. MODAL ===================== */
+#photoModal .modal-content {
+    background: transparent;
+    border: none;
+}
+
+#photoModal .modal-dialog {
+    transition: transform 0.4s ease;
+}
+
+#modalImage {
+    max-height: 85vh;
+    width: auto;
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 768px) {
+    .masonry-grid { column-count: 2; column-gap: 12px; }
+    .masonry-item { margin-bottom: 12px; border-radius: 12px; }
+    .em-breve-titulo { font-size: 5rem; }
+    .galeria-wrapper { padding-top: 100px; }
+}
+
+@media (max-width: 480px) {
+    .masonry-grid { column-count: 2; column-gap: 10px; }
+    .masonry-item { margin-bottom: 10px; }
+    .em-breve-titulo { font-size: 3.5rem; }
+    .floating-filters { bottom: 80px; gap: 8px; }
+    .floating-filters .filter-btn { padding: 10px 16px; font-size: 0.7rem; }
+}

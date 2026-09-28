@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>José & Noemy • Confirmação de Presença</title>
+    <link rel="icon" type="image/png" href="assets/images/LogoNoemi.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Luxurious+Script&family=Spectral+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/presenca.css">
+</head>
+<body>
+
+<nav class="navbar fixed-top navbar-expand-lg" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <img src="assets/images/LogoNoemi.png" alt="José & Noemy" height="48">
+        </a>
+        <button class="navbar-toggler custom-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-expanded="false" id="hamburgerBtn">
+            <div class="hamburger">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </div>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto text-center">
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('index.html')">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('informacoes.html')">Informações</a></li>
+                <li class="nav-item"><a class="nav-link active" href="javascript:void(0)" onclick="irPara('presenca.html')">Presença</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('presentes.html')">Presentes</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="irPara('galeria.html')">Galeria</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="presenca-wrap">
+    <div class="presenca-card">
+        <h1 class="titulo-type">
+            <span id="typeText"></span><span class="cursor">|</span>
+        </h1>
+        <p class="sub">Pedimos que confirme assim que tiver certeza.</p>
+
+        <div class="input-wrap">
+            <input type="text" id="nomeInput" placeholder="Seu nome completo" autocomplete="off">
+            <ul id="sugestoesLista"></ul>
+        </div>
+
+        <button id="btnConfirmar" class="btn-confirmar">Confirmar Presença</button>
+        <div id="resultado"></div>
+    </div>
+</main>
+
+<!-- Modal de sucesso -->
+<div class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-ok">
+            <div class="modal-body text-center">
+                <div class="ok-icon"><i class="fa-solid fa-heart"></i></div>
+                <h3 id="modalNome"></h3>
+                <p id="modalMensagem"></p>
+                <button class="btn-confirmar" data-bs-dismiss="modal" style="max-width:200px;margin:0 auto;">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="music-player">
+    <button id="musicBtn" class="btn-music"><i class="fas fa-music"></i></button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script src="js/core.js"></script>
+<script src="js/script.js"></script>
+<script>
+/* ========== TYPEWRITER ========== */
+const frasesTitulo = [
+    "Confirme sua presença...",
+    "Estamos te esperando!",
+];
+const typeEl = document.getElementById('typeText');
+let fraseIdx = 0, charIdx = 0, apagando = false;
+
+function typeWriter() {
+    const atual = frasesTitulo[fraseIdx];
+    if (!apagando) {
+        typeEl.textContent = atual.slice(0, charIdx + 1);
+        charIdx++;
+        if (charIdx === atual.length) {
+            apagando = true;
+            setTimeout(typeWriter, 5000);
+            return;
+        }
+    } else {
+        typeEl.textContent = atual.slice(0, charIdx - 1);
+        charIdx--;
+        if (charIdx === 0) {
+            apagando = false;
+            fraseIdx = (fraseIdx + 1) % frasesTitulo.length;
+        }
+    }
+    setTimeout(typeWriter, apagando ? 120 : 200);
+}
+typeWriter();
+
+/* ========== FIREBASE ========== */
+let convidados = {};
+let confirmados = {};
+
+const normalize = s => (s || '').toString().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '').trim().toUpperCase();
+
+const msgs = [
+    "Que alegria saber que você vem! Estamos contando os dias.",
+    "Sua presença torna o nosso dia ainda mais especial.",
+    "Obrigado por confirmar — mal podemos esperar para celebrar com você.",
+    "Você faz parte da nossa história. Te esperamos com o coração aberto.",
+    "Confirmado com carinho. Nos vemos no grande dia!",
+    "Que bom ter você conosco. Vai ser inesquecível."
+];
+
+db.ref('convidados').on('value', snap => {
+    convidados = snap.val() || {};
+});
+db.ref('confirmacoes').on('value', snap => {
+    confirmados = snap.val() || {};
+});
+
+const input = document.getElementById('nomeInput');
+const ul = document.getElementById('sugestoesLista');
+const resultado = document.getElementById('resultado');
+
+function renderSugestoes(q) {
+    const query = normalize(q);
+    if (!query || query.length < 1) {
+        ul.style.display = 'none';
+        ul.innerHTML = '';
+        return;
+    }
+    const lista = Object.values(convidados)
+        .map(c => c.nome)
+        .filter(n => normalize(n).startsWith(query));
+    if (!lista.length) {
+        ul.style.display = 'none';
+        return;
+    }
+    ul.innerHTML = lista.map(nome => {
+        const ja = !!confirmados[normalize(nome)];
+        return `<li data-nome="${esc(nome)}" class="${ja ? 'ja' : ''}">${esc(nome)}${ja ? ' ✓' : ''}</li>`;
+    }).join('');
+    ul.style.display = 'block';
+}
+
+input.addEventListener('input', () => renderSugestoes(input.value));
+ul.addEventListener('click', e => {
+    const li = e.target.closest('li');
+    if (!li) return;
+    input.value = li.dataset.nome;
+    ul.style.display = 'none';
+});
+document.addEventListener('click', e => {
+    if (!e.target.closest('.input-wrap')) ul.style.display = 'none';
+});
+
+document.getElementById('btnConfirmar').onclick = async () => {
+    const nome = input.value.trim();
+    if (!nome) {
+        resultado.textContent = 'Por favor, digite seu nome.';
+        resultado.className = 'msg erro';
+        return;
+    }
+    const key = normalize(nome);
+    const existe = Object.values(convidados).some(c => normalize(c.nome) === key);
+    if (!existe) {
+        resultado.textContent = 'Nome não encontrado na lista de convidados.';
+        resultado.className = 'msg erro';
+        return;
+    }
+    if (confirmados[key]) {
+        resultado.textContent = 'Você já confirmou sua presença. Obrigado!';
+        resultado.className = 'msg ok';
+        return;
+    }
+    try {
+        await db.ref('confirmacoes/' + key).set({
+            nome: nome,
+            data: new Date().toISOString()
+        });
+
+        document.getElementById('modalNome').textContent = nome;
+        document.getElementById('modalMensagem').textContent =
+            msgs[Math.floor(Math.random() * msgs.length)];
+
+        new bootstrap.Modal(document.getElementById('confirmModal')).show();
+
+        // Confetti
+        if (typeof confetti === 'function') {
+            confetti({
+                particleCount: 140,
+                spread: 80,
+                origin: { y: 0.65 },
+                colors: ['#11203d', '#344d80', '#9db4e6', '#c9d4ec', '#ffffff']
+            });
+            setTimeout(() => {
+                confetti({
+                    particleCount: 60,
+                    spread: 100,
+                    origin: { y: 0.7 },
+                    colors: ['#344d80', '#9db4e6']
+                });
+            }, 400);
+        }
+
+        resultado.textContent = '';
+        input.value = '';
+    } catch (err) {
+        console.error(err);
+        resultado.textContent = 'Erro ao confirmar. Tente novamente.';
+        resultado.className = 'msg erro';
+    }
+};
+
+/* Menu mobile */
+const navbar = document.getElementById('mainNav');
+const toggler = document.getElementById('hamburgerBtn');
+toggler?.addEventListener('click', () => {
+    setTimeout(() => {
+        if (toggler.getAttribute('aria-expanded') === 'true') {
+            navbar.classList.add('menu-open');
+            document.body.style.overflow = 'hidden';
+        } else {
+            navbar.classList.remove('menu-open');
+            document.body.style.overflow = '';
+        }
+    }, 10);
+});
+</script>
+</body>
+</html>
